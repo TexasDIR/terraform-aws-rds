@@ -1,82 +1,72 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
+provider "random" {}
 
 provider "aws" {
-  region = "us-east-2"
+  region = var.region
+
+  assume_role {
+    role_arn     = "arn:${var.partition}:iam::${var.account_id}:role/pcm-tfe-provisioning-role"
+    session_name = "TFE_Session"
+  }
+
 }
 
-provider "random" {}
+resource "random_string" "password" {
+  length      = 16
+  min_numeric = 1
+  min_lower   = 1
+  min_upper   = 1
+  special     = false
+}
+
 
 data "aws_availability_zones" "available" {}
 
-resource "random_pet" "random" {}
-
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "2.77.0"
-
-  name                 = "${random_pet.random.id}-education"
-  cidr                 = "10.0.0.0/16"
-  azs                  = data.aws_availability_zones.available.names
-  public_subnets       = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-}
-
-resource "aws_db_subnet_group" "education" {
-  name       = "${random_pet.random.id}-education"
-  subnet_ids = module.vpc.public_subnets
-
+locals {
   tags = {
-    Name = "${random_pet.random.id} Education"
+    environment     = var.environment
+    pcm-business_service_sysid = var.business_service
+    pcm-application_name_sysid = var.application_name
+    pcm-project_number         = var.project_number
+    pcm-tag_1                  = var.tag_1
   }
+
+  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(var.engine)}" : var.db_identifier
 }
 
-resource "aws_security_group" "rds" {
-  name   = "${random_pet.random.id}-education_rds"
-  vpc_id = module.vpc.vpc_id
+######## RDS MySQL ########
 
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["192.80.0.0/16"]
-  }
+module "db" {
+  source = "terraform-aws-modules/rds/aws"
 
-  egress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  identifier = local.identifier
 
-  tags = {
-    Name = "${random_pet.random.id}-education_rds"
-  }
-}
-
-resource "aws_db_parameter_group" "education" {
-  name   = "${random_pet.random.id}-education"
-  family = "postgres16"
-
-  parameter {
-    name  = "log_connections"
-    value = "1"
-  }
-}
-
-resource "aws_db_instance" "education" {
-  identifier             = "${var.db_name}-${random_pet.random.id}"
-  instance_class         = "db.t3.micro"
-  allocated_storage      = 5
-  engine                 = "postgres"
-  engine_version         = "16.3"
+  engine                 = var.engine
+  engine_version         = var.engine_version
+  instance_class         = var.instance_class
+  multi_az               = var.multi_az
+  manage_master_user_password = false
+  password               = random_string.password.result
+  storage_encrypted      = var.encrypted_storage
+  storage_type           = var.rds_volume_type
+  subnet_ids             = var.subnet_ids
+  allocated_storage      = var.rds_volume_size
+  max_allocated_storage  = var.max_allocated_storage
   username               = var.db_username
-  password               = var.db_password
-  db_subnet_group_name   = aws_db_subnet_group.education.name
-  vpc_security_group_ids = [aws_security_group.rds.id]
-  parameter_group_name   = aws_db_parameter_group.education.name
-  publicly_accessible    = true
-  skip_final_snapshot    = true
-  storage_encrypted      = var.db_encrypted
+  port                   = var.rds_port
+  vpc_security_group_ids = var.vpc_security_group_ids
+  maintenance_window     = var.rds_preferrred_maintenance_windows
+  backup_window          = var.rds_preferred_backup_window
+  create_db_subnet_group = var.create_db_subnet_group
+  family                 = "mysql8.0"
+  major_engine_version   = "8.0"
+  deletion_protection    = true
+
+  parameters = [
+    {
+      name  = "time_zone"
+      value = "US/Central"
+    }
+  ]
+
+  tags = local.tags
 }
