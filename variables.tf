@@ -61,7 +61,7 @@ variable "engine" {
       "sqlserver-ee",
       "sqlserver-se",
       "sqlserver-ex",
-    "sqlserver-web"], var.engine)
+      "sqlserver-web"], var.engine)
     error_message = "The database engine name is not correct."
   }
 }
@@ -321,11 +321,6 @@ variable "pci" {
     condition     = contains(["yes", "no"], var.pci)
     error_message = "Valid values for var: pci are (yes, no)."
   }
-}
-
-variable "patch_group" {
-  description = "The value of the patch group tag." #This is mandatory
-  type        = string
 }
 
 variable "build_engineer" {
