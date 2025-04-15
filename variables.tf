@@ -91,7 +91,7 @@ variable "create_db_subnet_group" {
 variable "db_subnet_group_name" {
   description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
   type        = string
-  # default     = null
+  default     = null
 }
 
 variable "db_subnet_group_use_name_prefix" {
@@ -103,7 +103,7 @@ variable "db_subnet_group_use_name_prefix" {
 variable "db_subnet_group_description" {
   description = "Description of the DB subnet group to create"
   type        = string
-  # default     = null
+  default     = null
 }
 
 variable "subnet_ids" {
@@ -115,16 +115,19 @@ variable "subnet_ids" {
 variable "multi_az" {
   type        = bool
   description = "Specify whether the Database is configured in Multiple AZs or not."
+  default = false
 }
 
 variable "encrypted_storage" {
   type        = bool
   description = "Whether storage for RDS is encrypted or not."
+  default = true
 }
 
 variable "rds_backup_retention" {
   type        = number
   description = "RDS backup retention for the database."
+  default = 7
   validation {
     condition     = var.rds_backup_retention >= 0 && var.rds_backup_retention <= 35
     error_message = "Valid values for var: rds_backup_retention is between 0 - 35."
@@ -134,6 +137,7 @@ variable "rds_backup_retention" {
 variable "rds_preferred_backup_window" {
   type        = string
   description = "value"
+  default = "23:00-23:59"
 }
 
 variable "rds_parameter_group_name" {
@@ -146,17 +150,15 @@ variable "instance_class" {
   type        = string
   # default     = "t3.medium" #Setting default size
   validation {
-    condition = !contains(["t2.nano",
+    condition = !contains([
+      "t2.nano",
       "t2.micro",
       "t2.small",
       "t3.nano",
       "t3.micro",
       "t3.small",
-      "t3a.nano",
-      "t3a.micro",
-      "t3a.small"
     ], var.instance_class)
-    error_message = "Valid values for var: instances_class are available at: https://aws.amazon.com/ec2/instance-types/"
+    error_message = "Valid values for var: instances_class are available at: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.Types.html"
   }
 }
 
@@ -169,6 +171,7 @@ variable "instance_class" {
 variable "db_username" {
   description = "The db master username"
   type        = string
+  default = "dba"
   validation {
     condition     = length(var.db_username) > 1 && length(var.db_username) < 17
     error_message = "The db master username for RDS instance cannot be longer than 16 characters"
@@ -179,42 +182,45 @@ variable "rds_port" {
   type        = number
   description = "RDS Port for Database."
   validation {
-    condition     = var.rds_port >= 1150 && var.rds_volume_size <= 65536
-    error_message = "Valid values for var: rds_port is between 1150 - 65536."
+    condition     = contains ([1433,3306,5432],var.rds_port)
+    error_message = "Valid values for var: rds_port are 1433 (SQL Server), 3306 (MySQL and MariaDB), and 5432 (PostgreSQL)."
   }
 }
 
 variable "rds_volume_size" {
   description = "RDS volume size in GB"
   type        = number
+  default = 20
   validation {
-    condition     = var.rds_volume_size >= 5 && var.rds_volume_size <= 65536
+    condition     = var.rds_volume_size >= 20 && var.rds_volume_size <= 65536
     error_message = "Valid values for var: rds_volume_size is between 5 and 65536 GiB."
   }
 }
 
 variable "rds_volume_type" {
-  description = "RDS volume type valid option types are standard, gp2, gp3, io1, io2"
+  description = "RDS volume type valid option types are gp2, gp3, io1, io2"
   type        = string
-  # default     = "gp3"
+  default     = "gp3"
   validation {
-    condition     = contains(["standard", "gp2", "gp3", "io1", "io2"], var.rds_volume_type)
+    condition     = contains(["gp2", "gp3", "io1", "io2"], var.rds_volume_type)
     error_message = "Valid values for var: rds_volume_type  are (standard, gp2, gp3, io1, io2)."
   }
 }
 
 variable "max_allocated_storage" {
-  description = "Max allocated storage size."
+  description = "Max allocated storage size. Minimum is 20GiB (gp2 and gp3) and 100GiB (io1 and io2). Max 65536GiB (gp2 and gp3) and 16384GiB (io1 and io2)"
   type        = number
+  default = 100
   validation {
-    condition     = var.max_allocated_storage >= 5 && var.max_allocated_storage <= 65536
-    error_message = "Valid values for var: max_allocated_storage is between 5 and 65536 GiB."
+    condition     = var.max_allocated_storage >= 20 && var.max_allocated_storage <= 65536
+    error_message = "Valid values for var: max_allocated_storage is between 20 and 65536 GiB."
   }
 }
 
 variable "rds_preferrred_maintenance_windows" {
   description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
   type        = string
+  default = "Mon:00:00-Mon:03:00"
 }
 
 ################################################################################
@@ -234,34 +240,37 @@ variable "environment" {
 variable "business_service" {
   description = "The value of the business_service tag."
   type        = string
+  default = "empty"
 }
 
 variable "application_name" {
   description = "The value of the application_name tag."
   type        = string
+  default = "empty"
 }
 
 variable "project_number" {
   description = "The value of the project_number tag."
   type        = string
+  default = "pcm-management"
 }
 
 variable "tag_1" {
   description = "The value of the pcm-tag_1 tag."
   type        = string
-  # default     = "testing"
+  default     = "testing"
 }
 
 variable "tag_2" {
   description = "The value of the pcm-tag_2 tag."
   type        = string
-  # default     = "testing"
+  default     = "testing"
 }
 
 variable "tag_3" {
   description = "The value of the pcm-tag_3 tag."
   type        = string
-  # default     = "testing"
+  default     = "testing"
 }
 
 variable "cjis" {

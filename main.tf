@@ -29,7 +29,7 @@ locals {
     pcm-project_number         = var.project_number
     pcm-tag_1                  = var.tag_1
   }
-
+  rds_family = "${var.engine}${var.engine_version}"
   identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(var.engine)}" : var.db_identifier
 }
 
@@ -57,8 +57,8 @@ module "db" {
   maintenance_window     = var.rds_preferrred_maintenance_windows
   backup_window          = var.rds_preferred_backup_window
   create_db_subnet_group = var.create_db_subnet_group
-  family                 = "mysql8.0"
-  major_engine_version   = "8.0"
+  family                 = local.rds_family
+  major_engine_version   = var.engine_version
   deletion_protection    = true
 
   parameters = [
