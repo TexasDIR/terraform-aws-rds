@@ -20,10 +20,14 @@ resource "random_string" "password" {
 
 
 data "aws_availability_zones" "available" {}
+data "aws_rds_engine_version" "latest" {
+  engine = var.engine
+  preferred_versions = [var.engine_version]
+}
 
 locals {
   tags = {
-    environment     = var.environment
+    environment                = var.environment
     pcm-business_service_sysid = var.business_service
     pcm-application_name_sysid = var.application_name
     pcm-project_number         = var.project_number
@@ -40,26 +44,26 @@ module "db" {
 
   identifier = local.identifier
 
-  engine                 = var.engine
-  engine_version         = var.engine_version
-  instance_class         = var.instance_class
-  multi_az               = var.multi_az
+  engine                      = var.engine
+  engine_version              = data.aws_rds_engine_version.latest.version_actual
+  instance_class              = var.instance_class
+  multi_az                    = var.multi_az
   manage_master_user_password = false
-  password               = random_string.password.result
-  storage_encrypted      = var.encrypted_storage
-  storage_type           = var.rds_volume_type
-  subnet_ids             = var.subnet_ids
-  allocated_storage      = var.rds_volume_size
-  max_allocated_storage  = var.max_allocated_storage
-  username               = var.db_username
-  port                   = var.rds_port
+  password                    = random_string.password.result
+  storage_encrypted           = var.encrypted_storage
+  storage_type                = var.rds_volume_type
+  subnet_ids                  = var.subnet_ids
+  allocated_storage           = var.rds_volume_size
+  max_allocated_storage       = var.max_allocated_storage
+  username                    = var.db_username
+  # port                        = var.rds_port
   vpc_security_group_ids = var.vpc_security_group_ids
-  maintenance_window     = var.rds_preferrred_maintenance_windows
+  maintenance_window     = var.rds_preferred_maintenance_windows
   backup_window          = var.rds_preferred_backup_window
   create_db_subnet_group = var.create_db_subnet_group
-  family                 = local.rds_family
-  major_engine_version   = var.engine_version
-  deletion_protection    = true
+  # family                      = local.rds_family
+  # major_engine_version        = var.engine_version
+  deletion_protection = true
 
   parameters = [
     {
