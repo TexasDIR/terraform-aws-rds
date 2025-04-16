@@ -65,12 +65,12 @@ module "db" {
   # major_engine_version        = var.engine_version
   deletion_protection = true
 
-  parameters = [
-    {
-      name  = "time_zone"
-      value = "US/Central"
-    }
-  ]
+  # parameters = [
+  #   {
+  #     name  = "time_zone"
+  #     value = "US/Central"
+  #   }
+  # ]
 
   tags = local.tags
 }

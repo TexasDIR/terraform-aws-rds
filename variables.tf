@@ -125,10 +125,10 @@ variable "rds_preferred_backup_window" {
   default     = "23:00-23:59"
 }
 
-variable "rds_parameter_group_name" {
-  type        = string
-  description = "value"
-}
+# variable "rds_parameter_group_name" {
+#   type        = string
+#   description = "value"
+# }
 
 variable "instance_class" {
   description = "Name to be used on all the resources as identifier"
