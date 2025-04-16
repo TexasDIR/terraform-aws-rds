@@ -21,7 +21,7 @@ resource "random_string" "password" {
 
 data "aws_availability_zones" "available" {}
 data "aws_rds_engine_version" "latest" {
-  engine = var.engine
+  engine             = var.engine
   preferred_versions = [var.engine_version]
 }
 
@@ -40,10 +40,8 @@ locals {
 ######## RDS MySQL ########
 
 module "db" {
-  source = "terraform-aws-modules/rds/aws"
-
-  identifier = local.identifier
-
+  source                      = "terraform-aws-modules/rds/aws"
+  identifier                  = local.identifier
   engine                      = var.engine
   engine_version              = data.aws_rds_engine_version.latest.version_actual
   instance_class              = var.instance_class
@@ -57,13 +55,14 @@ module "db" {
   max_allocated_storage       = var.max_allocated_storage
   username                    = var.db_username
   # port                        = var.rds_port
-  vpc_security_group_ids = var.vpc_security_group_ids
-  maintenance_window     = var.rds_preferred_maintenance_windows
-  backup_window          = var.rds_preferred_backup_window
-  create_db_subnet_group = var.create_db_subnet_group
+  vpc_security_group_ids      = var.vpc_security_group_ids
+  maintenance_window          = var.rds_preferred_maintenance_windows
+  backup_window               = var.rds_preferred_backup_window
+  create_db_subnet_group      = var.create_db_subnet_group
   family                      = local.rds_family
   # major_engine_version        = var.engine_version
-  deletion_protection = true
+  parameter_group_name        = var.rds_parameter_group_name
+  deletion_protection         = true
 
   # parameters = [
   #   {
@@ -72,5 +71,5 @@ module "db" {
   #   }
   # ]
 
-  tags = local.tags
+  tags                        = local.tags
 }
