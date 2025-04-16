@@ -61,7 +61,7 @@ module "db" {
   maintenance_window     = var.rds_preferred_maintenance_windows
   backup_window          = var.rds_preferred_backup_window
   create_db_subnet_group = var.create_db_subnet_group
-  # family                      = local.rds_family
+  family                      = local.rds_family
   # major_engine_version        = var.engine_version
   deletion_protection = true
 
