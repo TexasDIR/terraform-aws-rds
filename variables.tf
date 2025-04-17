@@ -56,10 +56,10 @@ variable "db_type" {
   type        = string
   validation {
     condition = contains([
-      "mariadb10_11",
-      "mariadb11_4",
-      "mysql8_0",
-      "mysql8_4",
+      "mariadb10.11",
+      "mariadb11.4",
+      "mysql8.0",
+      "mysql8.4",
       "postgres15",
       "postgres16",
       "postgres17",

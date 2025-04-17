@@ -154,7 +154,7 @@ module "db" {
   create_db_subnet_group      = var.create_db_subnet_group
   family                      = local.rds_family
   # major_engine_version        = var.engine_version
-  # parameter_group_name        = data.aws_rds_engine_version.latest.parameter_group_family
+  parameter_group_name        = "default.${var.db_type}"
   deletion_protection         = true
 
   # parameters = [
