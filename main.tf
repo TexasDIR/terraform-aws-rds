@@ -113,15 +113,20 @@ locals {
       parameter_group_name = "sqlserver-web-15.0"
     }
   }
+}
+
+locals {  
+  engine = local.db_engine[var.db_type].engine
+  engine_version = local.db_engine[var.db_type].engine_version
+  parameter_group_name = local.db_engine[var.db_type].parameter_group_name
   identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
-  
   rds_family = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
 
 }
 
 data "aws_rds_engine_version" "latest" {
-  engine             = local.db_engine[var.db_type].engine
-  preferred_versions = [local.db_engine[var.db_type].engine_version]
+  engine             = local.engine
+  preferred_versions = [local.engine_version]
 }
 
 ######## RDS MySQL ########
@@ -129,7 +134,7 @@ data "aws_rds_engine_version" "latest" {
 module "db" {
   source                      = "terraform-aws-modules/rds/aws"
   identifier                  = local.identifier
-  engine                      = local.db_engine[var.db_type].engine
+  engine                      = local.engine
   engine_version              = data.aws_rds_engine_version.latest.version_actual
   instance_class              = var.instance_class
   multi_az                    = var.multi_az
@@ -148,7 +153,7 @@ module "db" {
   create_db_subnet_group = var.create_db_subnet_group
   family                 = local.rds_family
   # major_engine_version        = var.engine_version
-  parameter_group_name = local.db_engine[var.db_type].parameter_group_name
+  parameter_group_name = local.parameter_group_name
   deletion_protection  = true
 
   # parameters = [
