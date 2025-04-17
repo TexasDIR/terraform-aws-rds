@@ -256,7 +256,7 @@ variable "business_service" {
 variable "application_name" {
   description = "The value of the application_name tag."
   type        = string
-  default     = "empty"
+  default     = "test"
 }
 
 variable "project_number" {

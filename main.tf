@@ -120,7 +120,7 @@ locals {
   # engine               = var.engine
   # engine_version       = var.engine_version
   # parameter_group_name = local.db_engine[var.db_type].parameter_group_name
-  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
+  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(var.engine)}" : var.db_identifier
   rds_family = "${var.engine}${var.engine_version}"
 
 }
