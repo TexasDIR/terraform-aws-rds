@@ -34,6 +34,23 @@ variable "db_name" {
   }
 }
 
+variable "engine" {
+  description = "The database type to use"
+  type        = string
+  validation {
+    condition = contains([
+      "mariadb",
+      "mysql",
+      "postgres",
+      "sqlserver-ee",
+      "sqlserver-se",
+      "sqlserver-ex",
+      "sqlserver-web"
+    ], var.engine)
+    error_message = "The database engine name is not correct."
+  }
+}
+
 variable "db_type" {
   description = "The database type to use"
   type        = string
