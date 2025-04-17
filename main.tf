@@ -154,7 +154,8 @@ module "db" {
   create_db_subnet_group      = var.create_db_subnet_group
   family                      = local.rds_family
   # major_engine_version        = var.engine_version
-  parameter_group_name        = "default.${var.db_type}"
+  # parameter_group_name        = "default.${var.db_type}"
+  create_db_parameter_group = false
   parameter_group_use_name_prefix = true
   deletion_protection         = true
 
