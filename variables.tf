@@ -76,10 +76,10 @@ variable "db_type" {
   }
 }
 
-# variable "engine_version" {
-#   description = "The engine version to use"
-#   type        = string
-# }
+variable "engine_version" {
+  description = "The engine version to use"
+  type        = string
+}
 
 # variable "engine_lifecycle_support" {
 #   description = "The life cycle type for this DB instance. This setting applies only to RDS for MySQL and RDS for PostgreSQL. Valid values are `open-source-rds-extended-support`, `open-source-rds-extended-support-disabled`. Default value is `open-source-rds-extended-support`."

@@ -118,7 +118,7 @@ locals {
 locals {
   # engine               = local.db_engine[var.db_type].engine
   engine               = var.engine
-  engine_version       = local.db_engine[var.db_type].engine_version
+  engine_version       = var.engine_version
   parameter_group_name = local.db_engine[var.db_type].parameter_group_name
   identifier           = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
   rds_family           = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
@@ -127,7 +127,7 @@ locals {
 
 data "aws_rds_engine_version" "latest" {
   engine             = var.engine
-  preferred_versions = [local.db_engine[var.db_type].engine_version]
+  preferred_versions = [var.engine_version]
 }
 
 ######## RDS MySQL ########
