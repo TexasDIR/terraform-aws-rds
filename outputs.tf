@@ -11,8 +11,8 @@ output "db_engine" {
   value = data.aws_rds_engine_version.latest.version
 }
 
-output "rds_username" {
-  description = "RDS instance root username"
-  value       = module.db.db_instance_username
-}
+# output "rds_username" {
+#   description = "RDS instance root username"
+#   value       = module.db.db_instance_username
+# }
 
