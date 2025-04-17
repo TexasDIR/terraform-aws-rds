@@ -155,7 +155,7 @@ module "db" {
   family                      = local.rds_family
   # major_engine_version        = var.engine_version
   parameter_group_name        = "default.${var.db_type}"
-  parameter_group_use_name_prefix = false
+  parameter_group_use_name_prefix = true
   deletion_protection         = true
 
   # parameters = [
