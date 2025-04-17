@@ -16,3 +16,7 @@ output "rds_username" {
   value       = module.db.db_instance_username
 }
 
+output "db_identifier" {
+  value = module.db.db_instance_identifier
+  description = "RDS instance id"
+}
