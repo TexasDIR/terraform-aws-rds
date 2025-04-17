@@ -132,37 +132,37 @@ data "aws_rds_engine_version" "latest" {
 
 ######## RDS MySQL ########
 # Needs work
-# module "db" {
-#   source                      = "terraform-aws-modules/rds/aws"
-#   identifier                  = local.identifier
-#   engine                      = local.db_engine[var.db_type].engine
-#   engine_version              = data.aws_rds_engine_version.latest.version_actual
-#   instance_class              = var.instance_class
-#   multi_az                    = var.multi_az
-#   manage_master_user_password = false
-#   password                    = random_string.password.result
-#   storage_encrypted           = var.encrypted_storage
-#   storage_type                = var.rds_volume_type
-#   subnet_ids                  = var.subnet_ids
-#   allocated_storage           = var.rds_volume_size
-#   max_allocated_storage       = var.max_allocated_storage
-#   username                    = var.db_username
-#   # port                        = var.rds_port
-#   vpc_security_group_ids      = var.vpc_security_group_ids
-#   maintenance_window          = var.rds_preferred_maintenance_windows
-#   backup_window               = var.rds_preferred_backup_window
-#   create_db_subnet_group      = var.create_db_subnet_group
-#   family                      = local.rds_family
-#   # major_engine_version        = var.engine_version
-#   parameter_group_name        = data.aws_rds_engine_version.latest.parameter_group_family
-#   deletion_protection         = true
+module "db" {
+  source                      = "terraform-aws-modules/rds/aws"
+  identifier                  = local.identifier
+  engine                      = local.db_engine[var.db_type].engine
+  engine_version              = data.aws_rds_engine_version.latest.version_actual
+  instance_class              = var.instance_class
+  multi_az                    = var.multi_az
+  manage_master_user_password = false
+  password                    = random_string.password.result
+  storage_encrypted           = var.encrypted_storage
+  storage_type                = var.rds_volume_type
+  subnet_ids                  = var.subnet_ids
+  allocated_storage           = var.rds_volume_size
+  max_allocated_storage       = var.max_allocated_storage
+  username                    = var.db_username
+  # port                        = var.rds_port
+  vpc_security_group_ids      = var.vpc_security_group_ids
+  maintenance_window          = var.rds_preferred_maintenance_windows
+  backup_window               = var.rds_preferred_backup_window
+  create_db_subnet_group      = var.create_db_subnet_group
+  family                      = local.rds_family
+  # major_engine_version        = var.engine_version
+  parameter_group_name        = data.aws_rds_engine_version.latest.parameter_group_family
+  deletion_protection         = true
 
-#   # parameters = [
-#   #   {
-#   #     name  = "time_zone"
-#   #     value = "US/Central"
-#   #   }
-#   # ]
+  # parameters = [
+  #   {
+  #     name  = "time_zone"
+  #     value = "US/Central"
+  #   }
+  # ]
 
-#   tags = local.tags
-# }
+  tags = local.tags
+}
