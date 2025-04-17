@@ -115,12 +115,12 @@ locals {
   }
 }
 
-locals {  
-  engine = local.db_engine[var.db_type].engine
-  engine_version = local.db_engine[var.db_type].engine_version
+locals {
+  engine               = local.db_engine[var.db_type].engine
+  engine_version       = local.db_engine[var.db_type].engine_version
   parameter_group_name = local.db_engine[var.db_type].parameter_group_name
-  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
-  rds_family = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
+  identifier           = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
+  rds_family           = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
 
 }
 
