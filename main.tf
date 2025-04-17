@@ -31,7 +31,6 @@ locals {
     pcm-tag_1                  = var.tag_1
   }
 
-  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
   # MariaDB
   db_engine = {
     mariadb10_11 = {
@@ -114,6 +113,8 @@ locals {
       parameter_group_name = "sqlserver-web-15.0"
     }
   }
+  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
+  
   rds_family = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
 
 }
