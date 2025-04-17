@@ -20,10 +20,7 @@ resource "random_string" "password" {
 
 
 data "aws_availability_zones" "available" {}
-data "aws_rds_engine_version" "latest" {
-  engine             = var.engine
-  preferred_versions = [var.engine_version]
-}
+
 
 locals {
   tags = {
@@ -33,16 +30,105 @@ locals {
     pcm-project_number         = var.project_number
     pcm-tag_1                  = var.tag_1
   }
-  rds_family = "${var.engine}${var.engine_version}"
-  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(var.engine)}" : var.db_identifier
+
+  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
+  # MariaDB
+  db_engine = {
+    mariadb10_11 = {
+      engine               = "mariadb"
+      engine_version       = 10.11
+      parameter_group_name = "mariadb10.11"
+    }
+    mariadb11_4 = {
+      engine               = "mariadb"
+      engine_version       = 11.4
+      parameter_group_name = "mariadb11.4"
+    }
+    # MySQL
+    mysql8_0 = {
+      engine               = "mysql"
+      engine_version       = 8.0
+      parameter_group_name = "mysql8.0"
+    }
+    mysql8_4 = {
+      engine               = "mysql"
+      engine_version       = 8.4
+      parameter_group_name = "mysql8.4"
+    }
+    # PostgreSQL
+    postgres15 = {
+      engine               = "postgres"
+      engine_version       = 15
+      parameter_group_name = "postgres15"
+    }
+    postgres16 = {
+      engine               = "postgres"
+      engine_version       = 16
+      parameter_group_name = "postgres16"
+    }
+    postgres17 = {
+      engine               = "postgres"
+      engine_version       = 17
+      parameter_group_name = "postgres17"
+    }
+    # SQL Server 2019
+    sqlserver-ee-2019 = {
+      engine               = "sqlserver-ee"
+      engine_version       = 16.0
+      parameter_group_name = "sqlserver-ee-16.0"
+    }
+    sqlserver-se-2019 = {
+      engine               = "sqlserver-se"
+      engine_version       = 16.0
+      parameter_group_name = "sqlserver-se-16.0"
+    }
+    sqlserver-ex-2019 = {
+      engine               = "sqlserver-ex"
+      engine_version       = 16.0
+      parameter_group_name = "sqlserver-ex-16.0"
+    }
+    sqlserver-web-2019 = {
+      engine               = "sqlserver-web"
+      engine_version       = 16.0
+      parameter_group_name = "sqlserver-web-16.0"
+    }
+    # SQL Server 2017
+    sqlserver-ee-2017 = {
+      engine               = "sqlserver-ee"
+      engine_version       = 15.0
+      parameter_group_name = "sqlserver-ee-15.0"
+    }
+    sqlserver-se-2017 = {
+      engine               = "sqlserver-se"
+      engine_version       = 15.0
+      parameter_group_name = "sqlserver-se-15.0"
+    }
+    sqlserver-ex-2017 = {
+      engine               = "sqlserver-ex"
+      engine_version       = 15.0
+      parameter_group_name = "sqlserver-ex-15.0"
+    }
+    sqlserver-web-2017 = {
+      engine               = "sqlserver-web"
+      engine_version       = 15.0
+      parameter_group_name = "sqlserver-web-15.0"
+    }
+  }
+  rds_family = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
+
+}
+
+data "aws_rds_engine_version" "latest" {
+  engine             = local.db_engine[var.db_type].engine
+  preferred_versions = [local.db_engine[var.db_type].engine_version]
 }
 
 ######## RDS MySQL ########
-
+# Needs work
 module "db" {
   source                      = "terraform-aws-modules/rds/aws"
   identifier                  = local.identifier
-  engine                      = var.engine
+  engine                      = local.db_engine[var.db_type].engine
   engine_version              = data.aws_rds_engine_version.latest.version_actual
   instance_class              = var.instance_class
   multi_az                    = var.multi_az
@@ -55,14 +141,14 @@ module "db" {
   max_allocated_storage       = var.max_allocated_storage
   username                    = var.db_username
   # port                        = var.rds_port
-  vpc_security_group_ids      = var.vpc_security_group_ids
-  maintenance_window          = var.rds_preferred_maintenance_windows
-  backup_window               = var.rds_preferred_backup_window
-  create_db_subnet_group      = var.create_db_subnet_group
-  family                      = local.rds_family
+  vpc_security_group_ids = var.vpc_security_group_ids
+  maintenance_window     = var.rds_preferred_maintenance_windows
+  backup_window          = var.rds_preferred_backup_window
+  create_db_subnet_group = var.create_db_subnet_group
+  family                 = local.rds_family
   # major_engine_version        = var.engine_version
-  parameter_group_name        = var.rds_parameter_group_name
-  deletion_protection         = true
+  parameter_group_name = local.db_engine[var.db_type].parameter_group_name
+  deletion_protection  = true
 
   # parameters = [
   #   {
@@ -71,5 +157,5 @@ module "db" {
   #   }
   # ]
 
-  tags                        = local.tags
+  tags = local.tags
 }
