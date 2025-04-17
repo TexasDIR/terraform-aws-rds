@@ -134,7 +134,7 @@ data "aws_rds_engine_version" "latest" {
 module "db" {
   source                      = "terraform-aws-modules/rds/aws"
   identifier                  = local.identifier
-  engine                      = local.engine
+  engine                      = local.db_engine[var.db_type].engine
   engine_version              = data.aws_rds_engine_version.latest.version_actual
   instance_class              = var.instance_class
   multi_az                    = var.multi_az
@@ -147,14 +147,14 @@ module "db" {
   max_allocated_storage       = var.max_allocated_storage
   username                    = var.db_username
   # port                        = var.rds_port
-  vpc_security_group_ids = var.vpc_security_group_ids
-  maintenance_window     = var.rds_preferred_maintenance_windows
-  backup_window          = var.rds_preferred_backup_window
-  create_db_subnet_group = var.create_db_subnet_group
-  family                 = local.rds_family
+  vpc_security_group_ids      = var.vpc_security_group_ids
+  maintenance_window          = var.rds_preferred_maintenance_windows
+  backup_window               = var.rds_preferred_backup_window
+  create_db_subnet_group      = var.create_db_subnet_group
+  family                      = local.rds_family
   # major_engine_version        = var.engine_version
-  parameter_group_name = local.parameter_group_name
-  deletion_protection  = true
+  parameter_group_name        = data.aws_rds_engine_version.latest.parameter_group_family
+  deletion_protection         = true
 
   # parameters = [
   #   {
