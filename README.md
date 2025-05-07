@@ -1,5 +1,5 @@
 <!--- Update this line to a more specific description -->
-# New AWS EC2 Instance
+# New AWS RDS Instance
 
 <p align="center">
   <img height="130" src="https://www.comsoltx.com/wp-content/uploads/2016/03/logo-dir-e1462808600875.png">
@@ -21,11 +21,11 @@
 ---
 <!--- Add information to each section below and be as accurate as possible when filling in the details -->
 
-This module makes it easy to create a new ec2 instance in AWS.
+This module makes it easy to create a new RDS instance in AWS.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-- One new AWS EC2 instance
+- One new AWS RDS instance
 <!-- - Dual stacked ipv4 and ipv6 network interface -->
 <!-- - Creates a network interface with both IPv4 and IPv6 addresses -->
 - Creates a network interface with IPv4 address
@@ -53,19 +53,18 @@ Basic usage of this module is as follows:
 
 ```hcl
 ## The following values are examples of the requested variables
-module "new-ec2-instance" {
-  source                             = "tfe.dir.texas.gov/TexasDIR/ec2_instance_linux_no_code/aws"
-  version                            = "~> 0.0.19"
+module "new-rds-instance" {
+  source                             = "tfe.dir.texas.gov/TexasDIR/rds/aws"
+  version                            = "~> 1.0.32"
   account_id                         = "<aws_account_id>"
   region                             = "us-east-2"
-  hostname                           = "hostname"
-  instance_class                     = "m5.large"
-  root_volume_type                   = "gp3"
-  root_volume_size                   = "100"
-  secondary_volume_type              = "gp3"
-  secondary_volume_size              = "100"
-  os_version                         = "WIN2022"
-  subnet_id                          = "subnet-<abcdefghi......>"
+  instance_class                     = "db.m5.large"
+  rds_volume_type                    = "gp3"
+  rds_volume_size                    = "100"
+  max_allocated_storage              = "1000"
+  db_type                            = "postgres17"
+  engine                             = "postgres"
+  subnet_id                          = ["subnet-<abcdefghi......>","subnet-<12345678.....>]
   partition                          = "aws"
   security_group_ids                 = ["sg-abcdefg0123456"]
   business_service                   = "empty"
@@ -82,7 +81,7 @@ module "new-ec2-instance" {
   environment                        = "Production"
   primary_capability                 = "application_database"
   dba_support                        = "none"
-  middleware_support                 = "no"
+  middleware_support                 = "yes"
   dr_capability                      = "class_c"
   cloud_decision                     = "customer_preference"
   dmz                                = "no"
@@ -97,17 +96,19 @@ module "new-ec2-instance" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | account_id | This is the AWS account id where you would like the ec2 instance deployed | `string` | `""` | yes |
-| region | This is the google region where you would like the resource deployed  | `string` | `""` | yes |
-| hostname | This will be the hostname given to the newly created instance. Please review <a href="https://dirsharedservices.service-now.com/$viewer.do?sysparm_stack=nosysparm_sys_id=35ef109493524e18a791feed1dba1041">ANC-607-01</a> for more details.| `string` | `""` | yes |
+| region | This is the AWS region where you would like the resource deployed  | `string` | `""` | yes |
+| db_identifier | This will be the database identifier for the newly created RDS instance. | `string` | `""` | yes |
 | instance_class | This option would be your instance type, more information can be found within the following AWS documentation https://docs.aws.amazon.com/ec2/latest/instancetypes/instance-types.html | `string` | `""` | yes |
-| root_volume_type | This would be the "type" of disk used to run your OS, more information can be found at https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html | `string` | `""` | yes |
-| root_volume_size | This would be a numeric value assigned to your OS disk, the recommended minimum value is 100gb | `string` | `""` | yes |
-| secondary_volume_type | This would be the "type" of disk used to store your data, more information can be found at https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html | `string` | `""` | yes |
-| secondary_volume_size | This would be a numeric value assigned to your data disk, the recommended minimum value is 100gb | `string` | `""` | yes |
-| os_version | The OS version from which to initialize this disk, the opeating system   | `string` | `""` | yes |
-| subnet_id | The name of the subnetwork to attach this interface to | `string` | `""` | yes |
+| rds_volume_type | This would be the "type" of disk used to run your RDS Instance, more information can be found at https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html | `string` | `""` | yes |
+| rds_volume_size | This would be a numeric value assigned to your RDS volume, the recommended minimum value is 100gb | `string` | `""` | yes |
+| max_allocated_storage | Max size of RDS storage volume to grow to | `string` | `""` | yes |
+| engine | The database engine from which to launch new RDS instance   | `string` | `""` | yes |
+| engine_version | The database engine version from which to launch new RDS instance   | `string` | `""` | yes |
+| db_type | The database engine version from which to launch new RDS instance   | `string` | `""` | yes |
+
+| subnet_ids | The ids of the subnetworks to attach this RDS instance to | `list` | `""` | yes |
 | partition | The AWS partition to deploy EC2 instance to | `string` | `""` | yes |
-| security_group_ids | The list of security groups to attach to the network interface | `list` | `""` | yes |
+| vpc_security_group_ids | The list of security groups to attach to the RDS instance| `list` | `""` | yes |
 | business_service | ServiceNow Application Portfolio Management (APM) - Business Service Sysid.  Used to identify which Business Service(s) each cloud resource is being used to support | `string` | `""` | yes |
 | application_name | ServiceNow Application Portfolio Management (APM) - Application Name sysid.  Used to identify which Application Name(s) each cloud resource is being used to support. Refer to Application Portfolio Management (APM) | `string` | `""` | yes |
 | tag1 | Customer choice.  Customer Tag for ITFM.  This can be any data the Customer would like to see in the ITFM system for their own grouping or knowledge of specific device(s) | `string` | `""` | yes |
@@ -132,5 +133,7 @@ module "new-ec2-instance" {
 | Name | Description |
 |------|-------------|
 | RDS Hostname | This is the RDS instance hostname of the new RDS instance that was created |
-| RDS Port | This is the port for the RDS instance that was created |
 | RDS Username | This is the RDS master username for the created RDS instance |
+| RDS DB Engine | This is the RDS RDS database engine for the created RDS instance |
+| RDS DB Identifier | This is the RDS database identifier for the created RDS instance |
+| RDS DB Resource ID | This is the RDS database resource id for the created RDS instance |

@@ -56,10 +56,10 @@ variable "db_type" {
   type        = string
   validation {
     condition = contains([
-      "mariadb10.11",
-      "mariadb11.4",
-      "mysql8.0",
-      "mysql8.4",
+      "mariadb10_11",
+      "mariadb11_4",
+      "mysql8_0",
+      "mysql8_4",
       "postgres15",
       "postgres16",
       "postgres17",
@@ -150,10 +150,10 @@ variable "rds_preferred_backup_window" {
   default     = "23:00-23:59"
 }
 
-variable "rds_parameter_group_name" {
-  type        = string
-  description = "value"
-}
+# variable "rds_parameter_group_name" {
+#   type        = string
+#   description = "value"
+# }
 
 variable "instance_class" {
   description = "Name to be used on all the resources as identifier"
