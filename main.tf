@@ -142,7 +142,8 @@ locals {
 
 data "aws_rds_engine_version" "latest" {
   engine             = var.engine
-  preferred_versions = [var.engine_version]
+  # preferred_versions = [var.engine_version]
+  latest = true
 }
 
 ######## RDS MySQL ########
