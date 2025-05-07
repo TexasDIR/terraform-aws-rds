@@ -37,79 +37,94 @@ locals {
       engine               = "mariadb"
       engine_version       = 10.11
       parameter_group_name = "mariadb10.11"
+      major_engine_version = 10
     }
     mariadb11_4 = {
       engine               = "mariadb"
       engine_version       = 11.4
       parameter_group_name = "mariadb11.4"
+      major_engine_version = 11
     }
     # MySQL
     mysql8_0 = {
       engine               = "mysql"
       engine_version       = 8.0
+      major_engine_version = 8
       parameter_group_name = "mysql8.0"
     }
     mysql8_4 = {
       engine               = "mysql"
       engine_version       = 8.4
+      major_engine_version = 8
       parameter_group_name = "mysql8.4"
     }
     # PostgreSQL
     postgres15 = {
       engine               = "postgres"
       engine_version       = 15
+      major_engine_version = 15
       parameter_group_name = "postgres15"
     }
     postgres16 = {
       engine               = "postgres"
       engine_version       = 16
+      major_engine_version = 16
       parameter_group_name = "postgres16"
     }
     postgres17 = {
       engine               = "postgres"
       engine_version       = 17
+      major_engine_version = 17
       parameter_group_name = "postgres17"
     }
     # SQL Server 2019
     sqlserver-ee-2019 = {
       engine               = "sqlserver-ee"
       engine_version       = 16.0
+      major_engine_version = 16
       parameter_group_name = "sqlserver-ee-16.0"
     }
     sqlserver-se-2019 = {
       engine               = "sqlserver-se"
       engine_version       = 16.0
+      major_engine_version = 16
       parameter_group_name = "sqlserver-se-16.0"
     }
     sqlserver-ex-2019 = {
       engine               = "sqlserver-ex"
       engine_version       = 16.0
+      major_engine_version = 16
       parameter_group_name = "sqlserver-ex-16.0"
     }
     sqlserver-web-2019 = {
       engine               = "sqlserver-web"
       engine_version       = 16.0
+      major_engine_version = 16
       parameter_group_name = "sqlserver-web-16.0"
     }
     # SQL Server 2017
     sqlserver-ee-2017 = {
       engine               = "sqlserver-ee"
       engine_version       = 15.0
+      major_engine_version = 15
       parameter_group_name = "sqlserver-ee-15.0"
     }
     sqlserver-se-2017 = {
       engine               = "sqlserver-se"
       engine_version       = 15.0
+      major_engine_version = 15
       parameter_group_name = "sqlserver-se-15.0"
     }
     sqlserver-ex-2017 = {
       engine               = "sqlserver-ex"
       engine_version       = 15.0
+      major_engine_version = 15
       parameter_group_name = "sqlserver-ex-15.0"
     }
     sqlserver-web-2017 = {
       engine               = "sqlserver-web"
       engine_version       = 15.0
+      major_engine_version = 15
       parameter_group_name = "sqlserver-web-15.0"
     }
   }
@@ -153,7 +168,7 @@ module "db" {
   backup_window               = var.rds_preferred_backup_window
   create_db_subnet_group      = var.create_db_subnet_group
   family                      = local.rds_family
-  # major_engine_version        = var.engine_version
+  major_engine_version        = local.db_engine[var.db_type].major_engine_version
   # parameter_group_name        = "default.${var.db_type}"
   create_db_parameter_group = false
   parameter_group_use_name_prefix = true
