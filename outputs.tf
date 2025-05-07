@@ -17,11 +17,11 @@ output "rds_username" {
 }
 
 output "db_identifier" {
-  value = module.db.db_instance_identifier
+  value       = module.db.db_instance_identifier
   description = "RDS instance identifier"
 }
 
 output "db_resource_id" {
-  value = module.db.db_instance_resource_id
+  value       = module.db.db_instance_resource_id
   description = "RDS instance resource ID"
 }

@@ -31,32 +31,32 @@ locals {
     pcm-tag_1                  = var.tag_1
   }
 
-  
+
   db_engine = {
-  #   # MariaDB
-  #   mariadb1011 = {
-  #     engine               = "mariadb"
-  #     engine_version       = 10.11
-  #     parameter_group_name = "mariadb10.11"
-  #     major_engine_version = 10
-  #   }
-  #   mariadb114 = {
-  #     engine               = "mariadb"
-  #     engine_version       = 11.4
-  #     parameter_group_name = "mariadb11.4"
-  #     major_engine_version = 11
-  #   }
+    #   # MariaDB
+    #   mariadb1011 = {
+    #     engine               = "mariadb"
+    #     engine_version       = 10.11
+    #     parameter_group_name = "mariadb10.11"
+    #     major_engine_version = 10
+    #   }
+    #   mariadb114 = {
+    #     engine               = "mariadb"
+    #     engine_version       = 11.4
+    #     parameter_group_name = "mariadb11.4"
+    #     major_engine_version = 11
+    #   }
     # MySQL
     mysql80 = {
       engine               = "mysql"
       engine_version       = 8.0
-      major_engine_version = 8
+      major_engine_version = 8.0
       parameter_group_name = "mysql8.0"
     }
     mysql84 = {
       engine               = "mysql"
       engine_version       = 8.4
-      major_engine_version = 8
+      major_engine_version = 8.4
       parameter_group_name = "mysql8.4"
     }
     # PostgreSQL
@@ -142,7 +142,7 @@ locals {
 }
 
 data "aws_rds_engine_version" "latest" {
-  engine             = var.engine
+  engine = var.engine
   # preferred_versions = [var.engine_version]
   latest = true
 }
@@ -165,16 +165,16 @@ module "db" {
   max_allocated_storage       = var.max_allocated_storage
   username                    = var.db_username
   # port                        = var.rds_port
-  vpc_security_group_ids      = var.vpc_security_group_ids
-  maintenance_window          = var.rds_preferred_maintenance_windows
-  backup_window               = var.rds_preferred_backup_window
-  create_db_subnet_group      = var.create_db_subnet_group
-  family                      = local.rds_family
-  major_engine_version        = local.db_engine[var.db_type].major_engine_version
+  vpc_security_group_ids = var.vpc_security_group_ids
+  maintenance_window     = var.rds_preferred_maintenance_windows
+  backup_window          = var.rds_preferred_backup_window
+  create_db_subnet_group = var.create_db_subnet_group
+  family                 = local.rds_family
+  major_engine_version   = local.db_engine[var.db_type].major_engine_version
   # parameter_group_name        = "default.${var.db_type}"
-  create_db_parameter_group = false
+  create_db_parameter_group       = false
   parameter_group_use_name_prefix = true
-  deletion_protection         = true
+  deletion_protection             = true
 
   # parameters = [
   #   {
