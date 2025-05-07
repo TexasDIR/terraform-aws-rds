@@ -76,9 +76,17 @@ variable "db_type" {
   }
 }
 
+
+
 variable "engine_version" {
   description = "The engine version to use"
   type        = string
+}
+
+variable "major_engine_version" {
+  description = "The major engine version to use for the db parameter group option."
+  type = string
+  
 }
 
 # variable "engine_lifecycle_support" {
