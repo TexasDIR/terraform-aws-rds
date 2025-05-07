@@ -31,40 +31,41 @@ locals {
     pcm-tag_1                  = var.tag_1
   }
 
-  # MariaDB
+  
   db_engine = {
-    mariadb10_11 = {
-      engine               = "mariadb"
-      engine_version       = 10.11
-      parameter_group_name = "mariadb10.11"
-      major_engine_version = 10
-    }
-    mariadb11_4 = {
-      engine               = "mariadb"
-      engine_version       = 11.4
-      parameter_group_name = "mariadb11.4"
-      major_engine_version = 11
-    }
+  #   # MariaDB
+  #   mariadb1011 = {
+  #     engine               = "mariadb"
+  #     engine_version       = 10.11
+  #     parameter_group_name = "mariadb10.11"
+  #     major_engine_version = 10
+  #   }
+  #   mariadb114 = {
+  #     engine               = "mariadb"
+  #     engine_version       = 11.4
+  #     parameter_group_name = "mariadb11.4"
+  #     major_engine_version = 11
+  #   }
     # MySQL
-    mysql8_0 = {
+    mysql80 = {
       engine               = "mysql"
       engine_version       = 8.0
       major_engine_version = 8
       parameter_group_name = "mysql8.0"
     }
-    mysql8_4 = {
+    mysql84 = {
       engine               = "mysql"
       engine_version       = 8.4
       major_engine_version = 8
       parameter_group_name = "mysql8.4"
     }
     # PostgreSQL
-    postgres15 = {
-      engine               = "postgres"
-      engine_version       = 15
-      major_engine_version = 15
-      parameter_group_name = "postgres15"
-    }
+    # postgres15 = {
+    #   engine               = "postgres"
+    #   engine_version       = 15
+    #   major_engine_version = 15
+    #   parameter_group_name = "postgres15"
+    # }
     postgres16 = {
       engine               = "postgres"
       engine_version       = 16

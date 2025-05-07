@@ -56,11 +56,11 @@ variable "db_type" {
   type        = string
   validation {
     condition = contains([
-      "mariadb10_11",
-      "mariadb11_4",
-      "mysql8_0",
-      "mysql8_4",
-      "postgres15",
+      # "mariadb1011",
+      # "mariadb114",
+      "mysql80",
+      "mysql84",
+      # "postgres15",
       "postgres16",
       "postgres17",
       "sqlserver-ee-2017",
@@ -72,7 +72,7 @@ variable "db_type" {
       "sqlserver-ex-2019",
       "sqlserver-web-2019"
     ], var.db_type)
-    error_message = "The database engine name is not correct."
+    error_message = "The database engine type is not correct."
   }
 }
 
