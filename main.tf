@@ -1,3 +1,20 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+  cloud {
+    hostname     = "tfe.dir.texas.gov"
+    organization = "TexasDIR"
+
+    workspaces {
+      name = "mysql-rds-test"
+    }
+  }
+}
+
 provider "random" {}
 
 provider "aws" {
@@ -28,36 +45,49 @@ locals {
     pcm-business_service_sysid = var.business_service
     pcm-application_name_sysid = var.application_name
     pcm-project_number         = var.project_number
+    pcm-sensitive_data_cjis    = var.cjis
+    pcm-sensitive_data_ferpa   = var.ferpa
+    pcm-sensitive_data_fti     = var.fti
+    pcm-sensitive_data_phi     = var.phi
+    pcm-sensitive_data_pii     = var.pii
+    pcm-sensitive_data_pci     = var.pci
     pcm-tag_1                  = var.tag_1
+    pcm-tag_2                  = var.tag_2
+    pcm-tag_3                  = var.tag_3
+    pcm-built_by               = var.build_by
   }
 
 
   db_engine = {
-    #   # MariaDB
-    #   mariadb1011 = {
-    #     engine               = "mariadb"
-    #     engine_version       = 10.11
-    #     parameter_group_name = "mariadb10.11"
-    #     major_engine_version = 10
-    #   }
-    #   mariadb114 = {
-    #     engine               = "mariadb"
-    #     engine_version       = 11.4
-    #     parameter_group_name = "mariadb11.4"
-    #     major_engine_version = 11
-    #   }
+      # MariaDB
+      mariadb1011 = {
+        engine               = "mariadb"
+        engine_version       = 10.11
+        parameter_group_name = "mariadb10.11"
+        major_engine_version = 10
+        license_model = "general-public-license"
+      }
+      mariadb1104 = {
+        engine               = "mariadb"
+        engine_version       = 11.4
+        parameter_group_name = "mariadb11.4"
+        major_engine_version = 11
+        license_model = "general-public-license"
+      }
     # MySQL
     mysql80 = {
       engine               = "mysql"
       engine_version       = 8.0
       major_engine_version = 8.0
       parameter_group_name = "mysql8.0"
+      license_model = "general-public-license"
     }
     mysql84 = {
       engine               = "mysql"
       engine_version       = 8.4
       major_engine_version = 8.4
       parameter_group_name = "mysql8.4"
+      license_model = "general-public-license"
     }
     # PostgreSQL
     # postgres15 = {
@@ -71,62 +101,72 @@ locals {
       engine_version       = 16
       major_engine_version = 16
       parameter_group_name = "postgres16"
+      license_model = "postgresql-license"
     }
     postgres17 = {
       engine               = "postgres"
       engine_version       = 17
       major_engine_version = 17
       parameter_group_name = "postgres17"
+      license_model = "postgresql-license"
     }
     # SQL Server 2019
     sqlserver-ee-2019 = {
       engine               = "sqlserver-ee"
-      engine_version       = 16.0
-      major_engine_version = 16
-      parameter_group_name = "sqlserver-ee-16.0"
+      engine_version       = "16.00"
+      major_engine_version = "16.00"
+      parameter_group_name = "sqlserver-ee-16.00"
+      license_model = "license-included"
     }
     sqlserver-se-2019 = {
       engine               = "sqlserver-se"
-      engine_version       = 16.0
-      major_engine_version = 16
-      parameter_group_name = "sqlserver-se-16.0"
+      engine_version       = "16.00"
+      major_engine_version = "16.00"
+      parameter_group_name = "sqlserver-se-16.00"
+      license_model = "license-included"
     }
     sqlserver-ex-2019 = {
       engine               = "sqlserver-ex"
-      engine_version       = 16.0
-      major_engine_version = 16
-      parameter_group_name = "sqlserver-ex-16.0"
+      engine_version       = "16.00"
+      major_engine_version = "16.00"
+      parameter_group_name = "sqlserver-ex-16.00"
+      license_model = "license-included"
     }
     sqlserver-web-2019 = {
       engine               = "sqlserver-web"
-      engine_version       = 16.0
-      major_engine_version = 16
-      parameter_group_name = "sqlserver-web-16.0"
+      engine_version       = "16.00"
+      major_engine_version = "16.00"
+      parameter_group_name = "sqlserver-web-16.00"
+      license_model = "license-included"
     }
     # SQL Server 2017
     sqlserver-ee-2017 = {
       engine               = "sqlserver-ee"
-      engine_version       = 15.0
-      major_engine_version = 15
-      parameter_group_name = "sqlserver-ee-15.0"
+      engine_version       = "15.00"
+      major_engine_version = "15.00"
+      parameter_group_name = "sqlserver-ee-15.00"
+      license_model = "license-included"
     }
     sqlserver-se-2017 = {
       engine               = "sqlserver-se"
-      engine_version       = 15.0
-      major_engine_version = 15
-      parameter_group_name = "sqlserver-se-15.0"
+      engine_version       = "15.00"
+      major_engine_version = "15.00"
+      parameter_group_name = "sqlserver-se-15.00"
+      license_model = "license-included"
     }
     sqlserver-ex-2017 = {
       engine               = "sqlserver-ex"
-      engine_version       = 15.0
-      major_engine_version = 15
-      parameter_group_name = "sqlserver-ex-15.0"
+      engine_version       = "15.00"
+      major_engine_version = "15.00"
+      parameter_group_name = "sqlserver-ex-15.00"
+      license_model = "license-included"
     }
     sqlserver-web-2017 = {
       engine               = "sqlserver-web"
-      engine_version       = 15.0
-      major_engine_version = 15
-      parameter_group_name = "sqlserver-web-15.0"
+      engine_version       = "15.00"
+      major_engine_version = "15.00"
+      parameter_group_name = "sqlserver-web-15.00"
+      license_model = "license-included"
     }
   }
 }
@@ -136,13 +176,13 @@ locals {
   # engine               = var.engine
   # engine_version       = var.engine_version
   # parameter_group_name = local.db_engine[var.db_type].parameter_group_name
-  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(var.engine)}" : var.db_identifier
-  rds_family = "${var.engine}${var.engine_version}"
+  identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
+  rds_family = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
 
 }
 
 data "aws_rds_engine_version" "latest" {
-  engine = var.engine
+  engine = local.db_engine[var.db_type].engine
   # preferred_versions = [var.engine_version]
   latest = true
 }
@@ -156,25 +196,28 @@ module "db" {
   engine_version              = data.aws_rds_engine_version.latest.version_actual
   instance_class              = var.instance_class
   multi_az                    = var.multi_az
-  manage_master_user_password = false
-  password                    = random_string.password.result
+  manage_master_user_password = true
+  # password                    = random_string.password.result
   storage_encrypted           = var.encrypted_storage
   storage_type                = var.rds_volume_type
   subnet_ids                  = var.subnet_ids
   allocated_storage           = var.rds_volume_size
   max_allocated_storage       = var.max_allocated_storage
   username                    = var.db_username
-  # port                        = var.rds_port
+  # port                            = var.rds_port
   vpc_security_group_ids = var.vpc_security_group_ids
   maintenance_window     = var.rds_preferred_maintenance_windows
   backup_window          = var.rds_preferred_backup_window
   create_db_subnet_group = var.create_db_subnet_group
   family                 = local.rds_family
   major_engine_version   = local.db_engine[var.db_type].major_engine_version
-  # parameter_group_name        = "default.${var.db_type}"
+  # parameter_group_name            = "default.${var.db_type}"
   create_db_parameter_group       = false
+  create_db_option_group          = true
+  option_group_name               = var.db_type
   parameter_group_use_name_prefix = true
-  deletion_protection             = true
+  deletion_protection             = var.deletion_protection
+  license_model = local.db_engine[var.db_type].license_model
 
   # parameters = [
   #   {
