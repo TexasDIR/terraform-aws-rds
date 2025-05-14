@@ -5,14 +5,14 @@ terraform {
       version = "~> 5.0"
     }
   }
-  cloud {
-    hostname     = "tfe.dir.texas.gov"
-    organization = "TexasDIR"
+  cloud { 
+    hostname = "tfe.dir.texas.gov" 
+    organization = "TexasDIR" 
 
-    workspaces {
-      name = "mysql-rds-test"
-    }
-  }
+    workspaces { 
+      name = "pcm-rds-gov-test" 
+    } 
+  } 
 }
 
 provider "random" {}
@@ -110,58 +110,58 @@ locals {
       parameter_group_name = "postgres17"
       license_model = "postgresql-license"
     }
-    # SQL Server 2019
-    sqlserver-ee-2019 = {
+    # SQL Server 2022
+    sqlserver-ee-2022 = {
       engine               = "sqlserver-ee"
       engine_version       = "16.00"
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-ee-16.00"
       license_model = "license-included"
     }
-    sqlserver-se-2019 = {
+    sqlserver-se-2022 = {
       engine               = "sqlserver-se"
       engine_version       = "16.00"
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-se-16.00"
       license_model = "license-included"
     }
-    sqlserver-ex-2019 = {
+    sqlserver-ex-2022 = {
       engine               = "sqlserver-ex"
       engine_version       = "16.00"
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-ex-16.00"
       license_model = "license-included"
     }
-    sqlserver-web-2019 = {
+    sqlserver-web-2022 = {
       engine               = "sqlserver-web"
       engine_version       = "16.00"
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-web-16.00"
       license_model = "license-included"
     }
-    # SQL Server 2017
-    sqlserver-ee-2017 = {
+    # SQL Server 2019
+    sqlserver-ee-2019 = {
       engine               = "sqlserver-ee"
       engine_version       = "15.00"
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-ee-15.00"
       license_model = "license-included"
     }
-    sqlserver-se-2017 = {
+    sqlserver-se-2019 = {
       engine               = "sqlserver-se"
       engine_version       = "15.00"
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-se-15.00"
       license_model = "license-included"
     }
-    sqlserver-ex-2017 = {
+    sqlserver-ex-2019 = {
       engine               = "sqlserver-ex"
       engine_version       = "15.00"
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-ex-15.00"
       license_model = "license-included"
     }
-    sqlserver-web-2017 = {
+    sqlserver-web-2019 = {
       engine               = "sqlserver-web"
       engine_version       = "15.00"
       major_engine_version = "15.00"
@@ -218,7 +218,7 @@ module "db" {
   parameter_group_use_name_prefix = true
   deletion_protection             = var.deletion_protection
   license_model = local.db_engine[var.db_type].license_model
-
+  backup_retention_period = var.rds_backup_retention
   # parameters = [
   #   {
   #     name  = "time_zone"
