@@ -11,7 +11,7 @@ variable "partition" {
   description = "If Govcloud then enter aws-us-gov if not enter aws"
   validation {
     condition     = contains(["aws-us-gov", "aws"], var.partition)
-    error_message = "Valid values for var: environment are (aws-us-gov or aws)."
+    error_message = "Valid values for var: partition are (aws-us-gov or aws)."
   }
 }
 
@@ -158,8 +158,8 @@ variable "rds_preferred_backup_window" {
   default     = "23:00-23:59"
 }
 
-variable "rds_preferred_maintenance_windows" {
-  description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
+variable "rds_preferred_maintenance_window" {
+  description = "The window to perform maintenance in. Minimum of 30m. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
   type        = string
   default     = "Mon:00:00-Mon:03:00"
 }
@@ -190,7 +190,7 @@ variable "subnet_ids" {
   # default     = []
 }
 
-variable "vpc_security_group_ids" {
+variable "security_group_ids" {
   description = "List of VPC security groups to associate"
   type        = list(string)
 }
