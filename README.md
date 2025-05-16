@@ -114,7 +114,7 @@ module "new-rds-instance" {
 | rds_volume_size | This would be a numeric value assigned to your RDS volume, the recommended minimum value is 100gb | `number` | `""` | yes |
 | rds_volume_type | This would be the "type" of disk used to run your RDS Instance, more information can be found at https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html | `string` | `` | yes |
 | subnet_ids | The ids of the subnetworks to attach this RDS instance to | `list` | `""` | yes |
-| vpc_security_group_ids | The list of security groups to attach to the RDS instance| `list` | `""` | yes |
+| security_group_ids | The list of security groups to attach to the RDS instance| `list` | `""` | yes |
 | application_name | ServiceNow Application Portfolio Management (APM) - Application Name sysid.  Used to identify which Application Name(s) each cloud resource is being used to support. Refer to Application Portfolio Management (APM) | `string` | `""` | yes |
 | business_service | ServiceNow Application Portfolio Management (APM) - Business Service Sysid.  Used to identify which Business Service(s) each cloud resource is being used to support | `string` | `""` | yes |
 | environment | Identifies the lifecycle of the environment (ie., dev, test, prod) | `string` | `""` | yes |
