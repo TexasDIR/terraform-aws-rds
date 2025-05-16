@@ -205,7 +205,7 @@ module "db" {
   max_allocated_storage       = var.max_allocated_storage
   username                    = var.db_username
   # port                            = var.rds_port
-  vpc_security_group_ids = var.vpc_security_group_ids
+  vpc_security_group_ids = var.security_group_ids
   maintenance_window     = var.rds_preferred_maintenance_windows
   backup_window          = var.rds_preferred_backup_window
   create_db_subnet_group = var.create_db_subnet_group
