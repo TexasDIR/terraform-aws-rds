@@ -89,13 +89,6 @@ locals {
       parameter_group_name = "mysql8.4"
       license_model = "general-public-license"
     }
-    # PostgreSQL
-    # postgres15 = {
-    #   engine               = "postgres"
-    #   engine_version       = 15
-    #   major_engine_version = 15
-    #   parameter_group_name = "postgres15"
-    # }
     postgres16 = {
       engine               = "postgres"
       engine_version       = 16
@@ -183,7 +176,7 @@ locals {
 
 data "aws_rds_engine_version" "latest" {
   engine = local.db_engine[var.db_type].engine
-  # preferred_versions = [var.engine_version]
+  preferred_versions = local.local.db_engine[var.db_type].engine_version
   latest = true
 }
 
