@@ -20,6 +20,12 @@ variable "region" {
   description = "AWS region to deploy resources into."
 }
 
+variable "company_name" {
+  type        = string
+  default     = ""
+  description = "name of company deploying resources"
+}
+
 ################################################################################
 # RDS Specifications
 ################################################################################

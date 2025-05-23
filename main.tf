@@ -19,12 +19,10 @@ provider "random" {}
 
 provider "aws" {
   region = var.region
-
   assume_role {
-    role_arn     = "arn:${var.partition}:iam::${var.account_id}:role/pcm-tfe-provisioning-role"
+    role_arn     = "arn:${var.partition}:iam::${var.account_id}:role/pcm${var.company_name != "" ? join("",["-",lower(var.company_name),"-"]) : "-"}tfe-provisioning-role"
     session_name = "TFE_Session"
   }
-
 }
 
 resource "random_string" "password" {

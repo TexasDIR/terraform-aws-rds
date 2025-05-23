@@ -29,10 +29,9 @@ The resources/services/activations/deletions that this module will create/trigge
 <!-- - Dual stacked ipv4 and ipv6 network interface -->
 <!-- - Creates a network interface with both IPv4 and IPv6 addresses -->
 - Creates a network interface with IPv4 address
-- Two persistent disks (OS \ Data) with the OS and sizing of your choice
 - Disks will be automatically added to the default snapshot schedule built into the existing AWS Backup
 
-<p>To learn more about AWS EC2 instances including instance types and stoprage options please click the following link <a href="https://docs.aws.amazon.com/ec2/?nc2=h_ql_doc_ec2">Amazon Elastic Compute Cloud Documentation</a></p>
+<p>To learn more about AWS RDS instances including instance types and storage options please click the following link <a href="https://aws.amazon.com/rds/instance-types/">Amazon RDS Instance Types</a></p>
 
 ## Important:
 
