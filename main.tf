@@ -10,7 +10,7 @@ terraform {
     organization = "TexasDIR" 
 
     workspaces { 
-      name = "pcm-rds-gov-test" 
+      name = "pcm-rds-test" 
     } 
   } 
 }
@@ -54,7 +54,7 @@ locals {
     pcm-tag_1                  = var.tag_1
     pcm-tag_2                  = var.tag_2
     pcm-tag_3                  = var.tag_3
-    pcm-built_by               = var.build_by
+    pcm-built_by               = var.built_by
   }
 
 
@@ -62,44 +62,44 @@ locals {
       # MariaDB
       mariadb1011 = {
         engine               = "mariadb"
-        engine_version       = 10.11
+        engine_version       = "10.11"
         parameter_group_name = "mariadb10.11"
-        major_engine_version = 10.11
+        major_engine_version = "10.11"
         license_model = "general-public-license"
       }
       mariadb1104 = {
         engine               = "mariadb"
-        engine_version       = 11.4
+        engine_version       = "11.4"
         parameter_group_name = "mariadb11.4"
-        major_engine_version = 11.4
+        major_engine_version = "11.4"
         license_model = "general-public-license"
       }
     # MySQL
     mysql80 = {
       engine               = "mysql"
-      engine_version       = 8.0
-      major_engine_version = 8.0
+      engine_version       = "8.0"
+      major_engine_version = "8.0"
       parameter_group_name = "mysql8.0"
       license_model = "general-public-license"
     }
     mysql84 = {
       engine               = "mysql"
-      engine_version       = 8.4
-      major_engine_version = 8.4
+      engine_version       = "8.4"
+      major_engine_version = "8.4"
       parameter_group_name = "mysql8.4"
       license_model = "general-public-license"
     }
     postgres16 = {
       engine               = "postgres"
-      engine_version       = 16
-      major_engine_version = 16
+      engine_version       = "16"
+      major_engine_version = "16"
       parameter_group_name = "postgres16"
       license_model = "postgresql-license"
     }
     postgres17 = {
       engine               = "postgres"
-      engine_version       = 17
-      major_engine_version = 17
+      engine_version       = "17"
+      major_engine_version = "17"
       parameter_group_name = "postgres17"
       license_model = "postgresql-license"
     }
@@ -176,7 +176,7 @@ locals {
 
 data "aws_rds_engine_version" "latest" {
   engine = local.db_engine[var.db_type].engine
-  preferred_versions = [local.db_engine[var.db_type].engine_version]
+  # preferred_versions = [local.db_engine[var.db_type].engine_version]
   latest = true
 }
 

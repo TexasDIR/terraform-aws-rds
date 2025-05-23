@@ -306,7 +306,7 @@ variable "pci" {
   }
 }
 
-variable "build_by" {
+variable "built_by" {
   description = "The email address of the build engineer."
   type        = string
   default     = "RackspacePCM"
