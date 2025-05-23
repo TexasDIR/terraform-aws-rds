@@ -64,14 +64,14 @@ locals {
         engine               = "mariadb"
         engine_version       = 10.11
         parameter_group_name = "mariadb10.11"
-        major_engine_version = 10
+        major_engine_version = 10.11
         license_model = "general-public-license"
       }
       mariadb1104 = {
         engine               = "mariadb"
         engine_version       = 11.4
         parameter_group_name = "mariadb11.4"
-        major_engine_version = 11
+        major_engine_version = 11.4
         license_model = "general-public-license"
       }
     # MySQL
