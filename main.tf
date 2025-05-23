@@ -176,7 +176,7 @@ locals {
 
 data "aws_rds_engine_version" "latest" {
   engine = local.db_engine[var.db_type].engine
-  preferred_versions = local.local.db_engine[var.db_type].engine_version
+  preferred_versions = local.db_engine[var.db_type].engine_version
   latest = true
 }
 
