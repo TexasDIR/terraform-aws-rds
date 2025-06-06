@@ -5,14 +5,14 @@ terraform {
       version = "~> 5.0"
     }
   }
-  cloud { 
-    hostname = "tfe.dir.texas.gov" 
-    organization = "TexasDIR" 
+  cloud {
+    hostname     = "tfe.dir.texas.gov"
+    organization = "TexasDIR"
 
-    workspaces { 
-      name = "pcm-rds-test" 
-    } 
-  } 
+    workspaces {
+      name = "pcm-rds-test"
+    }
+  }
 }
 
 provider "random" {}
@@ -59,49 +59,49 @@ locals {
 
 
   db_engine = {
-      # MariaDB
-      mariadb1011 = {
-        engine               = "mariadb"
-        engine_version       = "10.11"
-        parameter_group_name = "mariadb10.11"
-        major_engine_version = "10.11"
-        license_model = "general-public-license"
-      }
-      mariadb1104 = {
-        engine               = "mariadb"
-        engine_version       = "11.4"
-        parameter_group_name = "mariadb11.4"
-        major_engine_version = "11.4"
-        license_model = "general-public-license"
-      }
+    # MariaDB
+    mariadb1011 = {
+      engine               = "mariadb"
+      engine_version       = "10.11"
+      parameter_group_name = "mariadb10.11"
+      major_engine_version = "10.11"
+      license_model        = "general-public-license"
+    }
+    mariadb1104 = {
+      engine               = "mariadb"
+      engine_version       = "11.4"
+      parameter_group_name = "mariadb11.4"
+      major_engine_version = "11.4"
+      license_model        = "general-public-license"
+    }
     # MySQL
     mysql80 = {
       engine               = "mysql"
       engine_version       = "8.0"
       major_engine_version = "8.0"
       parameter_group_name = "mysql8.0"
-      license_model = "general-public-license"
+      license_model        = "general-public-license"
     }
     mysql84 = {
       engine               = "mysql"
       engine_version       = "8.4"
       major_engine_version = "8.4"
       parameter_group_name = "mysql8.4"
-      license_model = "general-public-license"
+      license_model        = "general-public-license"
     }
     postgres16 = {
       engine               = "postgres"
       engine_version       = "16"
       major_engine_version = "16"
       parameter_group_name = "postgres16"
-      license_model = "postgresql-license"
+      license_model        = "postgresql-license"
     }
     postgres17 = {
       engine               = "postgres"
       engine_version       = "17"
       major_engine_version = "17"
       parameter_group_name = "postgres17"
-      license_model = "postgresql-license"
+      license_model        = "postgresql-license"
     }
     # SQL Server 2022
     sqlserver-ee-2022 = {
@@ -109,28 +109,28 @@ locals {
       engine_version       = "16.00"
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-ee-16.00"
-      license_model = "license-included"
+      license_model        = "license-included"
     }
     sqlserver-se-2022 = {
       engine               = "sqlserver-se"
       engine_version       = "16.00"
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-se-16.00"
-      license_model = "license-included"
+      license_model        = "license-included"
     }
     sqlserver-ex-2022 = {
       engine               = "sqlserver-ex"
       engine_version       = "16.00"
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-ex-16.00"
-      license_model = "license-included"
+      license_model        = "license-included"
     }
     sqlserver-web-2022 = {
       engine               = "sqlserver-web"
       engine_version       = "16.00"
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-web-16.00"
-      license_model = "license-included"
+      license_model        = "license-included"
     }
     # SQL Server 2019
     sqlserver-ee-2019 = {
@@ -138,28 +138,28 @@ locals {
       engine_version       = "15.00"
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-ee-15.00"
-      license_model = "license-included"
+      license_model        = "license-included"
     }
     sqlserver-se-2019 = {
       engine               = "sqlserver-se"
       engine_version       = "15.00"
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-se-15.00"
-      license_model = "license-included"
+      license_model        = "license-included"
     }
     sqlserver-ex-2019 = {
       engine               = "sqlserver-ex"
       engine_version       = "15.00"
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-ex-15.00"
-      license_model = "license-included"
+      license_model        = "license-included"
     }
     sqlserver-web-2019 = {
       engine               = "sqlserver-web"
       engine_version       = "15.00"
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-web-15.00"
-      license_model = "license-included"
+      license_model        = "license-included"
     }
   }
 }
@@ -171,13 +171,13 @@ locals {
   # parameter_group_name = local.db_engine[var.db_type].parameter_group_name
   identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
   rds_family = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
-
+  iops = var.rds_volume_size <= 400 ? 12000 : 3000
 }
 
 data "aws_rds_engine_version" "latest" {
-  engine = local.db_engine[var.db_type].engine
+  engine  = local.db_engine[var.db_type].engine
   version = local.db_engine[var.db_type].engine_version
-  latest = true
+  latest  = true
 }
 
 ######## RDS MySQL ########
@@ -191,12 +191,13 @@ module "db" {
   multi_az                    = var.multi_az
   manage_master_user_password = true
   # password                    = random_string.password.result
-  storage_encrypted           = var.encrypted_storage
-  storage_type                = var.rds_volume_type
-  subnet_ids                  = var.subnet_ids
-  allocated_storage           = var.rds_volume_size
-  max_allocated_storage       = var.max_allocated_storage
-  username                    = var.db_username
+  storage_encrypted     = var.encrypted_storage
+  storage_type          = var.rds_volume_type
+  subnet_ids            = var.subnet_ids
+  allocated_storage     = var.rds_volume_size
+  max_allocated_storage = var.max_allocated_storage
+  iops                  = local.iops
+  username              = var.db_username
   # port                            = var.rds_port
   vpc_security_group_ids = var.security_group_ids
   maintenance_window     = var.rds_preferred_maintenance_windows
@@ -210,8 +211,8 @@ module "db" {
   option_group_name               = var.db_type
   parameter_group_use_name_prefix = true
   deletion_protection             = var.deletion_protection
-  license_model = local.db_engine[var.db_type].license_model
-  backup_retention_period = var.rds_backup_retention
+  license_model                   = local.db_engine[var.db_type].license_model
+  backup_retention_period         = var.rds_backup_retention
   # parameters = [
   #   {
   #     name  = "time_zone"
