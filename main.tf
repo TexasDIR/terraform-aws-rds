@@ -171,7 +171,7 @@ locals {
   # parameter_group_name = local.db_engine[var.db_type].parameter_group_name
   identifier = var.db_identifier == "" ? "${lower(var.application_name)}-${lower(var.environment)}-${lower(local.db_engine[var.db_type].engine)}" : var.db_identifier
   rds_family = "${local.db_engine[var.db_type].engine}${local.db_engine[var.db_type].engine_version}"
-  iops = var.rds_volume_size <= 400 ? 12000 : 3000
+  # iops = var.rds_volume_size <= 400 ? 12000 : 3000
 }
 
 data "aws_rds_engine_version" "latest" {
@@ -196,7 +196,7 @@ module "db" {
   subnet_ids            = var.subnet_ids
   allocated_storage     = var.rds_volume_size
   max_allocated_storage = var.max_allocated_storage
-  iops                  = local.iops
+  iops                  = var.iops
   username              = var.db_username
   # port                            = var.rds_port
   vpc_security_group_ids = var.security_group_ids
