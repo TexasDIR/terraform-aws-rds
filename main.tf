@@ -196,7 +196,7 @@ module "db" {
   subnet_ids            = var.subnet_ids
   allocated_storage     = var.rds_volume_size
   max_allocated_storage = var.max_allocated_storage
-  iops                  = var.iops
+  iops                  = var.rds_volume_iops
   username              = var.db_username
   # port                            = var.rds_port
   vpc_security_group_ids = var.security_group_ids

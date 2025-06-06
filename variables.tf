@@ -126,10 +126,6 @@ variable "instance_class" {
   }
 }
 
-variable "iops" {
-  type        = number
-  description = "Number of iops provisioned for gp3 and io2 rds_volume_type. Baseline iops for volumes below 400GB is 3000"
-}
 
 variable "max_allocated_storage" {
   description = "Max allocated storage size. Minimum is 20GiB (gp2 and gp3) and 100GiB (io1 and io2). Max 65536GiB (gp2 and gp3) and 16384GiB (io1 and io2)"
@@ -167,6 +163,11 @@ variable "rds_preferred_maintenance_windows" {
   description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
   type        = string
   default     = "Mon:00:00-Mon:03:00"
+}
+
+variable "rds_volume_iops" {
+  type        = number
+  description = "Number of iops provisioned for gp3 and io2 rds_volume_type. Baseline iops for volumes below 400GB is 3000"
 }
 
 variable "rds_volume_size" {
