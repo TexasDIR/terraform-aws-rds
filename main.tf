@@ -66,6 +66,7 @@ locals {
       parameter_group_name = "mariadb10.11"
       major_engine_version = "10.11"
       license_model        = "general-public-license"
+      is_sql_server = false
     }
     mariadb1104 = {
       engine               = "mariadb"
@@ -73,6 +74,7 @@ locals {
       parameter_group_name = "mariadb11.4"
       major_engine_version = "11.4"
       license_model        = "general-public-license"
+      is_sql_server = false
     }
     # MySQL
     mysql80 = {
@@ -81,6 +83,7 @@ locals {
       major_engine_version = "8.0"
       parameter_group_name = "mysql8.0"
       license_model        = "general-public-license"
+      is_sql_server = false
     }
     mysql84 = {
       engine               = "mysql"
@@ -88,6 +91,7 @@ locals {
       major_engine_version = "8.4"
       parameter_group_name = "mysql8.4"
       license_model        = "general-public-license"
+      is_sql_server = false
     }
     postgres16 = {
       engine               = "postgres"
@@ -95,6 +99,7 @@ locals {
       major_engine_version = "16"
       parameter_group_name = "postgres16"
       license_model        = "postgresql-license"
+      is_sql_server = false
     }
     postgres17 = {
       engine               = "postgres"
@@ -102,6 +107,7 @@ locals {
       major_engine_version = "17"
       parameter_group_name = "postgres17"
       license_model        = "postgresql-license"
+      is_sql_server = false
     }
     # SQL Server 2022
     sqlserver-ee-2022 = {
@@ -110,6 +116,7 @@ locals {
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-ee-16.00"
       license_model        = "license-included"
+      is_sql_server = true
     }
     sqlserver-se-2022 = {
       engine               = "sqlserver-se"
@@ -117,6 +124,7 @@ locals {
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-se-16.00"
       license_model        = "license-included"
+      is_sql_server = true
     }
     sqlserver-ex-2022 = {
       engine               = "sqlserver-ex"
@@ -124,6 +132,7 @@ locals {
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-ex-16.00"
       license_model        = "license-included"
+      is_sql_server = true
     }
     sqlserver-web-2022 = {
       engine               = "sqlserver-web"
@@ -131,6 +140,7 @@ locals {
       major_engine_version = "16.00"
       parameter_group_name = "sqlserver-web-16.00"
       license_model        = "license-included"
+      is_sql_server = true
     }
     # SQL Server 2019
     sqlserver-ee-2019 = {
@@ -139,6 +149,7 @@ locals {
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-ee-15.00"
       license_model        = "license-included"
+      is_sql_server = true
     }
     sqlserver-se-2019 = {
       engine               = "sqlserver-se"
@@ -146,6 +157,7 @@ locals {
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-se-15.00"
       license_model        = "license-included"
+      is_sql_server = true
     }
     sqlserver-ex-2019 = {
       engine               = "sqlserver-ex"
@@ -153,6 +165,7 @@ locals {
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-ex-15.00"
       license_model        = "license-included"
+      is_sql_server = true
     }
     sqlserver-web-2019 = {
       engine               = "sqlserver-web"
@@ -160,6 +173,7 @@ locals {
       major_engine_version = "15.00"
       parameter_group_name = "sqlserver-web-15.00"
       license_model        = "license-included"
+      is_sql_server = true
     }
   }
 }
@@ -189,7 +203,7 @@ module "db" {
   engine_version              = data.aws_rds_engine_version.latest.version_actual
   instance_class              = var.instance_class
   multi_az                    = var.multi_az
-  db_name                     = var.db_name
+  db_name                     = local.db_engine[var.db_type].is_sql_server ? "" : var.db_name
   manage_master_user_password = true
   # password                    = random_string.password.result
   storage_encrypted     = var.encrypted_storage
