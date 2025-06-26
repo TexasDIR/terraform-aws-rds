@@ -189,6 +189,7 @@ module "db" {
   engine_version              = data.aws_rds_engine_version.latest.version_actual
   instance_class              = var.instance_class
   multi_az                    = var.multi_az
+  db_name                     = var.db_name
   manage_master_user_password = true
   # password                    = random_string.password.result
   storage_encrypted     = var.encrypted_storage
